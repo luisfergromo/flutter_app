@@ -6,7 +6,10 @@ class RegistrationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+          title: Text('Registro'),
+        ),
         body: new Padding(
           child: Form(
               child: new Theme(
