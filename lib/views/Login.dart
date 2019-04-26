@@ -4,7 +4,8 @@ import 'RegistrationPage.dart';
 import 'package:my_app/controllers/input_validation.dart';
 
 final _formKey = GlobalKey<FormState>();
-final _emailController = TextEditingController();
+final _checkKey = GlobalKey<State>();
+final _usernameController = TextEditingController();
 final _passwordController = TextEditingController();
 
 String _email;
@@ -39,6 +40,8 @@ class _LoginPageState extends State<LoginPage>
     return loginPage();
   }
 
+  bool initialState = false;
+
   Widget loginPage() {
     return Scaffold(
       // appBar: AppBar(),
@@ -51,77 +54,109 @@ class _LoginPageState extends State<LoginPage>
           color: Colors.black87,
           colorBlendMode: BlendMode.darken,
         ),
-        new Column(mainAxisAlignment: MainAxisAlignment.center, children: <
-            Widget>[
-          new FlutterLogo(
-            size: _iconAnimation.value * 100,
-          ),
-          new Form(
-              autovalidate: _autoValidate,
-              key: _formKey,
-              child: new Theme(
-                  data: new ThemeData(
-                      brightness: Brightness.dark,
-                      primarySwatch: Colors.teal,
-                      inputDecorationTheme: new InputDecorationTheme(
-                          labelStyle: new TextStyle(
-                              color: Colors.teal, fontSize: 20.0))),
-                  child: Container(
-                      padding: const EdgeInsets.all(40.0),
-                      child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            new TextFormField(
-                              decoration: new InputDecoration(
-                                  labelText: 'Email:',
-                                  hintText: 'email@something.com'),
-                              keyboardType: TextInputType.emailAddress,
-                              controller: _emailController,
-                              validator: validateEmail,
-                            ),
-                            new TextFormField(
-                              decoration:
-                                  new InputDecoration(labelText: 'Password:'),
-                              keyboardType: TextInputType.text,
-                              obscureText: true,
-                              controller: _passwordController,
-                              validator: validatePassword,
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: SizedBox(
-                                    width: double.infinity,
-                                    child: new RaisedButton(
-                                        child: Text('LOGIN'),
-                                        splashColor: Colors.greenAccent,
-                                        onPressed: () {
-                                          _performLogin();
-                                        }))),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 12),
-                              child: FlatButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                RegistrationPage()));
+        new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new FlutterLogo(
+                size: _iconAnimation.value * 100,
+              ),
+              new Form(
+                  autovalidate: _autoValidate,
+                  key: _formKey,
+                  child: new Theme(
+                      data: new ThemeData(
+                          brightness: Brightness.dark,
+                          primarySwatch: Colors.teal,
+                          inputDecorationTheme: new InputDecorationTheme(
+                              labelStyle: new TextStyle(
+                                  color: Colors.teal, fontSize: 20.0))),
+                      child: Container(
+                          padding: const EdgeInsets.all(40.0),
+                          child: new Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                new TextFormField(
+                                    decoration: new InputDecoration(
+                                      labelText: 'Nombre de usuario:',
+                                      // hintText: 'email@something.com'
+                                    ),
+                                    keyboardType: TextInputType.text,
+                                    controller: _usernameController,
+                                    validator: validateUsername,
+                                    onSaved: (String val) {
+                                      _username = val;
+                                    }),
+                                new TextFormField(
+                                  decoration: new InputDecoration(
+                                      labelText: 'Contraseña:'),
+                                  keyboardType: TextInputType.text,
+                                  obscureText: true,
+                                  controller: _passwordController,
+                                  validator: validatePassword,
+                                  onSaved: (String val) {
+                                    _password = val;
                                   },
-                                  child: Text('No account yet? Create one')),
-                            ),
-                          ])))),
-        ]),
+                                ),
+                                Padding(
+                                  child: new Container(
+                                    constraints: BoxConstraints(),
+                                    child: new Row(
+                                      children: <Widget>[
+                                        Text(
+                                          'Mantener datos de sesión',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        Checkbox(
+                                            activeColor: Colors.teal,
+                                            key: _checkKey,
+                                            onChanged: (bool value) {
+                                              setState(() {
+                                                initialState = value;
+                                              });
+                                            },
+                                            value: initialState),
+                                      ],
+                                    ),
+                                  ),
+                                  padding: EdgeInsets.only(left: 40.0),
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: SizedBox(
+                                        width: double.infinity,
+                                        child: new RaisedButton(
+                                            child: Text('Ingresar'),
+                                            splashColor: Colors.greenAccent,
+                                            onPressed: () {
+                                              _performLogin(context);
+                                            }))),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 12),
+                                  child: FlatButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RegistrationPage()));
+                                      },
+                                      child: Text(
+                                        '¿Aún no tienes cuenta?\n¡Crea una ahora!',
+                                        style: TextStyle(inherit: true),
+                                      )),
+                                ),
+                              ])))),
+            ]),
       ]),
     );
   }
 
-  void _performLogin() {
+  void _performLogin(context) {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      debugPrint('Username: $_username\t|Email: $_email\t|Pass: $_password');
+      debugPrint('Username: $_username\t|Pass: $_password');
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Home()));
-      // print(_formKey.currentState.toString());
     } else {
       _autoValidate = true;
     }
