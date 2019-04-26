@@ -8,7 +8,6 @@ final _checkKey = GlobalKey<State>();
 final _usernameController = TextEditingController();
 final _passwordController = TextEditingController();
 
-String _email;
 String _password;
 String _username;
 bool _autoValidate = false;
