@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/controllers/home_widget.dart';
 import 'RegistrationPage.dart';
+import 'package:my_app/controllers/input_validation.dart';
+
+final _formKey = GlobalKey<FormState>();
+final _emailController = TextEditingController();
+final _passwordController = TextEditingController();
+
+String _email;
+String _password;
+String _username;
+bool _autoValidate = false;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -24,15 +34,15 @@ class _LoginPageState extends State<LoginPage>
     _iconAnimationController.forward();
   }
 
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    return loginPage();
+  }
+
+  Widget loginPage() {
     return Scaffold(
       // appBar: AppBar(),
-//     resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.grey,
       body: new Stack(fit: StackFit.expand, children: <Widget>[
         new Image(
@@ -47,6 +57,7 @@ class _LoginPageState extends State<LoginPage>
             size: _iconAnimation.value * 100,
           ),
           new Form(
+              autovalidate: _autoValidate,
               key: _formKey,
               child: new Theme(
                   data: new ThemeData(
@@ -66,7 +77,7 @@ class _LoginPageState extends State<LoginPage>
                                   hintText: 'email@something.com'),
                               keyboardType: TextInputType.emailAddress,
                               controller: _emailController,
-                              autovalidate: true,
+                              validator: validateEmail,
                             ),
                             new TextFormField(
                               decoration:
@@ -74,11 +85,7 @@ class _LoginPageState extends State<LoginPage>
                               keyboardType: TextInputType.text,
                               obscureText: true,
                               controller: _passwordController,
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'There\'s no password';
-                                }
-                              },
+                              validator: validatePassword,
                             ),
                             Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
@@ -109,11 +116,14 @@ class _LoginPageState extends State<LoginPage>
   }
 
   void _performLogin() {
-    String email = _emailController.text;
-    String password = _passwordController.text;
-    print('login attempt: $email with $password');
-
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Home()));
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      debugPrint('Username: $_username\t|Email: $_email\t|Pass: $_password');
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Home()));
+      // print(_formKey.currentState.toString());
+    } else {
+      _autoValidate = true;
+    }
   }
 }

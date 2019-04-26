@@ -7,7 +7,7 @@ String validateUsername(String value) {
 }
 
 String validatePassword(String value) {
-  if (value.length <= 8) {
+  if (value.length < 8) {
     return 'Password must be more at least 8 character';
   } else
     return null;
