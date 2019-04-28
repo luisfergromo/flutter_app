@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/controllers/home_widget.dart';
-import 'RegistrationPage.dart';
+// import 'RegistrationPage.dart';
 import 'package:my_app/controllers/input_validation.dart';
+import 'package:my_app/views/RegistrationPage.dart';
 
 final _formKey = GlobalKey<FormState>();
 final _checkKey = GlobalKey<State>();
@@ -96,28 +97,25 @@ class _LoginPageState extends State<LoginPage>
                                     _password = val;
                                   },
                                 ),
-                                Padding(
-                                  child: new Container(
-                                    constraints: BoxConstraints(),
-                                    child: new Row(
-                                      children: <Widget>[
-                                        Text(
-                                          'Mantener datos de sesión',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        Checkbox(
-                                            activeColor: Colors.teal,
-                                            key: _checkKey,
-                                            onChanged: (bool value) {
-                                              setState(() {
-                                                initialState = value;
-                                              });
-                                            },
-                                            value: initialState),
-                                      ],
-                                    ),
+                                new Container(
+                                  constraints: BoxConstraints(),
+                                  child: new Row(
+                                    children: <Widget>[
+                                      Text(
+                                        'Mantener datos de sesión',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      Checkbox(
+                                          activeColor: Colors.teal,
+                                          key: _checkKey,
+                                          onChanged: (bool value) {
+                                            setState(() {
+                                              initialState = value;
+                                            });
+                                          },
+                                          value: initialState),
+                                    ],
                                   ),
-                                  padding: EdgeInsets.only(left: 40.0),
                                 ),
                                 Padding(
                                     padding: const EdgeInsets.only(top: 8.0),
@@ -138,6 +136,8 @@ class _LoginPageState extends State<LoginPage>
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     RegistrationPage()));
+                                        // Navigator.popAndPushNamed(
+                                        //     context, '/registration');
                                       },
                                       child: Text(
                                         '¿Aún no tienes cuenta?\n¡Crea una ahora!',

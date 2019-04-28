@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/views/AboutPage.dart';
 import 'package:my_app/views/Login.dart';
-import 'AboutPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => About()));
+                // Navigator.popAndPushNamed(context, '/about');
               }),
           IconButton(
             icon: Icon(Icons.close),
@@ -58,5 +59,6 @@ class _HomePageState extends State<HomePage> {
   void _performLogOut() {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginPage()));
+    // Navigator.pushNamed(context, '/');
   }
 }

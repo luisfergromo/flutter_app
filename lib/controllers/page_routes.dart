@@ -20,7 +20,7 @@ class RouteGenerator {
         }
         return _errorRoute();
       case '/about':
-        return MaterialPageRoute(builder: (_) => AboutPage());
+        return MaterialPageRoute(builder: (_) => About());
       case '/registration':
         return MaterialPageRoute(builder: (_) => RegistrationPage());
       default:
